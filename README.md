@@ -153,6 +153,43 @@ Parses the log lines sent by the sampler and breaks them into the required compo
 The analyzer is the bridge between the data repository and the output facility. It uses two separate processes to gather generic statistics and traffic information from the database, does the necessary computations to determine whether an alarm should be raised or reset and then communicates with a console controller, whose role is to display the results.
 
 #### ConsoleOutput
+Displays the various information sent by the Analyzer. The output is periodically updated with the following information:
+* generic statistics about the total logged traffic, near the lower margin of the screen,
+* alarms, whenever they are raised and reset, as a downward-growing list beginning at the top of the screen (see `known bugs` later in this document).
+
+Here is some sample output taken from what you can see if you start the tools using the batch files
+
+	.----- status update at 18/mar/2018:22:02:58 +0100 (1155 s elapsed since start)
+	Most requested sections: <Aldebaran> (1212 hits) | <Saga> (1109 hits) | <ROOT> (1057 hits)
+	total site hits <11638> | topTraffic <127.94.197.64> (8791813)
+	topSc200 <127.94.197.64> (251) | topSc302 <177.223.136.121> (206)
+	topSc5xx <217.129.241.133> (8) | topSc4xx <123.152.129.6> (192)
+	Approximate request methods breakdown: HEAD (20,9%) | DELETE (14,8%) | POST (20,3%) | GET (21,2%) | OPTIONS (9,5%) | PUT (13,3%)
+	'-----
+
+From top to bottom, the traffic statistics are organized as follows:
+* update timestamp and total time elapsed since the application was started
+* list of the most requested site sections, each with the number of hits
+* total hits detected in this session (that's practically the number of lines in the log file...), followed by the ip which generated the highest traffic
+* The ip address for which the server responded with http status code "ok" (200), followed by the one which got the highest number of redirects
+* the ip address for which the server responded with a server side error (500 < status code < 599), and the one who got the highest number of client request error  (400 < status code < 499)
+* an approximate percentage breakdown of all the http methods detected in the log
+
+On the upper side of the console you will see the alarms being raised and (hopefully) reset during the monitor operations. The alarm shows the time at which it was raised, the detected traffic value, its relation with the set traffic threshold and a percentage of overflow.
+
+When an alarm is reset, another line is produced, indicating the timestamp, the traffic value, and its fraction of the traffic threshold as a percentage.
+
+
+
+
+
+
+
+
+
+
+
+
 
 **TODO TERMINARE** 
 
