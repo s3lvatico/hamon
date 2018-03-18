@@ -190,22 +190,17 @@ The random log line generation logic is in the class `org.gmnz.clog.ClfLineGener
 
 The thread which drives the generation of the log lines operates in a two-state fashion; it has a running period of 3 minutes, with alternating states of low and high traffic generation, set in a duty cycle of 35%. Means: it's programmed to emit low traffic (generates 2 reqs/second) for 13/20 of the 3 minutes time window and emits high traffic (15 reqs/second) for the remaining time. This assures an alternating behavior of alarms being raised and reset with respect to a threshold of 20000000 bytes.
 
-  
 
+## Known bugs
 
-
-
-
-
-
-
-**TODO TERMINARE** 
-
+* The ANSI facility could be better handled when a shutdown request is received.
+* Since the requirements were to keeping the alarm lines fixed and persistent on the main console window, running the monitor for too long with certain sequence of alarms being raised and reset, will eventually result in the alarm lines to overflow first the general statistics output, and then the very console window. Scrolling will occur, causing at least the top line to disappear. A feasible workaround would be to put the disappearing alarm lines in a separate log file while informing the user to actively check it.
+* You are forced to stare at some service build and startup log lines when the application starts and is waiting for the first update to be signaled. This choice was made to let me see in advance if there was some underlying problem during the startup process.
 
 
 ## Improvements
 
-A raised alarm should get updated for you to check how much the total traffic goes above the threshold you set. Every update should be marked with its timestamp, while the displayed alarm line retains the timestamp of when the alarm was first issued.
+* A raised alarm should get updated for you to check how much the total traffic goes above the threshold you set. Every update should be marked with its timestamp, while the displayed alarm line retains the timestamp of when the alarm was first issued.
 
 
 
