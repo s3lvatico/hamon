@@ -150,7 +150,11 @@ Its role is to periodically check the monitored file for new lines being added. 
 Parses the log lines sent by the sampler and breaks them into the required components. The parsed data is then sent to the persistent storage.
 
 #### Analyzer
+The analyzer is the bridge between the data repository and the output facility. It uses two separate processes to gather generic statistics and traffic information from the database, does the necessary computations to determine whether an alarm should be raised or reset and then communicates with a console controller, whose role is to display the results.
 
+#### ConsoleOutput
+
+**TODO TERMINARE** 
 
 
 
