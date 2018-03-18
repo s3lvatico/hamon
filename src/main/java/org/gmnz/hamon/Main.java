@@ -94,7 +94,7 @@ public class Main implements ServerSocketListener {
 
 
 	public static void main(String[] args) throws IOException {
-		BasicConfigurator.configure();
+//		BasicConfigurator.configure();
 		ParsedParamsResult ppr = new ParamsValidator().checkParams(args);
 
 		if (!ppr.paramsValid()) {

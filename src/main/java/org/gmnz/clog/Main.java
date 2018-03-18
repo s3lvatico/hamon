@@ -30,9 +30,9 @@ public class Main implements LogLineGeneratorListener, ServerSocketListener {
 
 	private static final Logger log = Logger.getLogger(Main.class);
 
-	static {
-		BasicConfigurator.configure();
-	}
+//	static {
+//		BasicConfigurator.configure();
+//	}
 
 
 
