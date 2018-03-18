@@ -99,7 +99,7 @@ public class ConsoleOutput {
 	private Ansi buildTrafficStatsOutput(Ansi a, long timestampNow, long timeSecondsElapsed, GeneralInfoDto dto,
 			List<SectionHitsDto> sectionHitsDtoList) {
 		String statsUpdateTimestamp = Formatting.formatClfTimestamp(timestampNow);
-		a.a(String.format(".-- status update at %s (%d s elapsed since start)%n", statsUpdateTimestamp,
+		a.a(String.format(".----- status update at %s (%d s elapsed since start)%n", statsUpdateTimestamp,
 				timeSecondsElapsed));
 		a.a("Most requested sections: ");
 		Iterator<SectionHitsDto> i = sectionHitsDtoList.iterator();
@@ -131,7 +131,7 @@ public class ConsoleOutput {
 				a.a("\n");
 			}
 		}
-		a.a("'-");
+		a.a("'-----");
 		return a;
 	}
 

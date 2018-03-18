@@ -87,6 +87,8 @@ Once you've built the project, you have multiple choices.
 
 ### Using the provided batch files
 
+**Note:** Using the provided batch files requires the project to be built beforehand.
+
 From the command prompt, launch the `hamonStart.bat` file.
 
 It will spawn both the random log generator process and the monitor as well, with default options.
@@ -132,6 +134,10 @@ Stopping the processes:
 	mvn exec:java -Dexec.mainClass=org.gmnz.clog.Main -Dexec.args="-shutdown"
 	mvn exec:java -Dexec.mainClass=org.gmnz.hamon.Main -Dexec.args="-shutdown"
 
+
+## General architecture
+
+XXXXXX TODO
 
 
 ## Improvements
