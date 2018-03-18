@@ -82,7 +82,7 @@ public class ConsoleOutput {
 			long timeSecondsElapsed) {
 		Ansi a = Ansi.ansi();
 		a.eraseScreen();
-		a.fgDefault().cursor(24, 0);
+		a.fgDefault().cursor(35, 0);
 
 		a = buildTrafficStatsOutput(a, timestampNow, timeSecondsElapsed, dto, sectionHitsDtoList);
 		AnsiConsole.out.println(a);
