@@ -149,9 +149,9 @@ public class Analyzer implements InfoGathererListener, TrafficSensorListener {
 			 * requires a finer management of the output facilities, which I see as an
 			 * improvement.
 			 */
-			else {
-				consoleOutput.updateAlarm(timestamp, totalTraffic, alarmThreshold, trafficToThresholdRatio);
-			}
+//			else {
+//				consoleOutput.updateAlarm(timestamp, totalTraffic, alarmThreshold, trafficToThresholdRatio);
+//			}
 		}
 		else
 			if (alarmState == AlarmState.ON) {

@@ -1,6 +1,6 @@
 # Hamon
 
-A simple http clf log parser
+A simple http common log file parser.
 
 
 
@@ -137,7 +137,21 @@ Stopping the processes:
 
 ## General architecture
 
-XXXXXX TODO
+### Hamon
+
+The flow of data is rather simple. It comes from the logfile itself, it's parsed and persisted to some storage. It is then picked up by an analysis component which checks for thresholds and other data, and then is sent to the console management component for displaying.
+
+In this first version I've used an embedded HSQLDB as the local data repository.
+
+#### Sampler
+Its role is to periodically check the monitored file for new lines being added. Within every sampling period, if there are new lines, they're gathered into a batch and sent to the parser for actual parsing.
+
+#### Parser
+Parses the log lines sent by the sampler and breaks them into the required components. The parsed data is then sent to the persistent storage.
+
+#### Analyzer
+
+
 
 
 ## Improvements

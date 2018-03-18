@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.gmnz.hamon.analysis.Analyzer;
 import org.gmnz.hamon.integration.Dao;
@@ -94,7 +93,6 @@ public class Main implements ServerSocketListener {
 
 
 	public static void main(String[] args) throws IOException {
-//		BasicConfigurator.configure();
 		ParsedParamsResult ppr = new ParamsValidator().checkParams(args);
 
 		if (!ppr.paramsValid()) {

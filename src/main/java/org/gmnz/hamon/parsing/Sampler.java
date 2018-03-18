@@ -47,7 +47,7 @@ class Sampler implements Runnable {
 				while ((line = reader.readLine()) != null) {
 					batch.add(line);
 				}
-				// inutile sollecitare il sistema se non c'è niente da inviare
+				// no need to bother the parser if we don't have data
 				if (batch.size() != 0) {
 					log.debug("clf lines to process: " + batch.size());
 					logParser.processBatch(batch);
