@@ -22,7 +22,7 @@ The monitor displays at fixed time intervals (approximately 10 seconds) a summar
 
 (I've also tested it with a simple Tomcat 8.5 instance, while moving around its predefined deployed web apps).
 
-When the total traffic within a 2 minutes time window exceeds a threshold value (`-t` parameter, in bytes) you get a red warning on the top of the console. THe warning stays fixed on the top of the screen 
+When the total traffic within a 2 minutes time window exceeds a threshold value (`-t` parameter, in bytes) you get a red warning on the top of the console. The warning stays fixed on the top of the screen.
 
 When the total traffic drops back below the threshold, another message is added after the last message, in a downward growing stack fashion.
 
@@ -65,14 +65,14 @@ Use `mvn package` (don't mind the stack traces, they're part of successful tests
 
 
 ### Hamon component
- `-f` : name of the log file that you want to keep under observation
- `-t` : traffic threshold (in bytes) over which to display alarms
- `-shutdown` : stops all the facilities and closes the program
+* `-f` : name of the log file that you want to keep under observation
+* `-t` : traffic threshold (in bytes) over which to display alarms
+* `-shutdown` : stops all the facilities and closes the program
 
 
 ### Log generation component
-`someFileName` : name of the file to which the randomly generated log lines will be written to
-`-shutdown` : stops all the facilities and closes the program
+* `someFileName` : name of the file to which the randomly generated log lines will be written to
+* `-shutdown` : stops all the facilities and closes the program
 
 
 
@@ -87,7 +87,7 @@ Once you've built the project, you have multiple choices.
 
 ### Using the provided batch files
 
-**Note:** running the tool this way will actually result in seeing a demo. The random log file producer and the monitor will be spawned with some default values for your convenience. Let it run for 5-6 minutes and you should see the stats flowing as well as some alarms being raised and reset.
+**Note:** running the tools this way will actually result in seeing a demo. The random log file producer and the monitor will be spawned with some default values for your convenience. Let it run for 5-6 minutes and you should see the stats flowing as well as some alarms being raised and reset.
 
 From the command prompt, launch the `hamonStart.bat` file.
 
@@ -98,9 +98,11 @@ To stop both processes, launch the `hamonStop.bat` file.
 
 ### Using the binaries in the `dist` directory
 
-We'll be using Windows' `start` command, since both the log generator and the log parser will spawn their own console window. It also leaves your command prompt free for issuing the shutdown commands.
+I will use Windows' `start` command, since both the log generator and the log parser will spawn their own console window. It also leaves your command prompt free for issuing the shutdown commands.
 
-Once you changed into the `dist` directory
+Change to the `dist` directory
+
+	cd dist
 
 to start the log generation process use the command:
 
@@ -152,7 +154,7 @@ Parses the log lines sent by the sampler and breaks them into the required compo
 Particular attention has been put in making the parser distinguish the request made on the root section while stripping information about requesting resources found on the root section. (i.e. requests made towards "/" and "/saitama.js" or "/favicon.ico" should be recognized as requests made to the root secion).
 
 #### Analyzer
-The analyzer is the bridge between the data repository and the output facility. It uses two separate processes to gather generic statistics and traffic information from the database, does the necessary computations to determine whether an alarm should be raised or reset and then communicates with a console controller, whose role is to display the results.
+The analyzer is the bridge between the data repository and the output facility. It uses two separate processes to gather generic statistics and traffic information from the database, does the necessary computations to decide whether an alarm should be raised or reset and then communicates with a console controller, whose role is to display the results.
 
 #### ConsoleOutput
 Displays the various information sent by the Analyzer. The output is periodically updated with the following information:
@@ -184,9 +186,9 @@ When an alarm is reset, another line is produced, indicating the timestamp, the 
 
 ### The random log generator tool
 
-Its task is to procude a log file in the expected format, but with time-variable frequencies. I purposefully did not let it accept parameters other than the target log file name, since this tool is intended to use as a demo.
+Its task is to produce a log file in the expected format, but with time-variable generated log lines frequencies. I purposefully did not let it accept parameters other than the target log file name, since this tool is intended to use as a demo.
 
-The random log line generation logic is in the class `org.gmnz.clog.ClfLineGenerator`, you can check it to see how I played with (pseudo) random numbers to generate a spectrum of requests as most variable as possible.
+The random log line generation logic is in the class `org.gmnz.clog.ClfLineGenerator`, you can check it to see how I used the (pseudo) random number generators to obtain a spectrum of requests as much variable as possible.
 
 The thread which drives the generation of the log lines operates in a two-state fashion; it has a running period of 3 minutes, with alternating states of low and high traffic generation, set in a duty cycle of 35%. Means: it's programmed to emit low traffic (generates 2 reqs/second) for 13/20 of the 3 minutes time window and emits high traffic (15 reqs/second) for the remaining time. This assures an alternating behavior of alarms being raised and reset with respect to a threshold of 20000000 bytes.
 
@@ -194,7 +196,7 @@ The thread which drives the generation of the log lines operates in a two-state 
 ## Known bugs
 
 * The ANSI facility could be better handled when a shutdown request is received.
-* Since the requirements were to keeping the alarm lines fixed and persistent on the main console window, running the monitor for too long with certain sequence of alarms being raised and reset, will eventually result in the alarm lines to overflow first the general statistics output, and then the very console window. Scrolling will occur, causing at least the top line to disappear. A feasible workaround would be to put the disappearing alarm lines in a separate log file while informing the user to actively check it.
+* Since the requirements were to keep the alarm lines fixed and persistent on the main console window, running the monitor for too long with certain sequence of alarms being raised and reset, will eventually result in the alarm lines to overflow first the general statistics output, and then the very console window. Scrolling will occur, causing at least the top line to disappear. A feasible workaround would be to put the disappearing alarm lines in a separate log file while informing the user to actively check it.
 * You are forced to stare at some service build and startup log lines when the application starts and is waiting for the first update to be signaled. This choice was made to let me see in advance if there was some underlying problem during the startup process.
 
 
@@ -214,7 +216,7 @@ The startup and shutdown scripts can be made easier by accepting parameters from
 
 
 ### Loose coupling
-The `Analyzer` (and, in turn, its controlled tasks) and the `CommonLogParser` classes  are directly injected with the (single) data access object. A better approach would be to inject an interface to a generic data repository, so that the classes which communicate to the data storage facilities are not aware of the nature of the data source they are actually using (it could be, for instance, a queue, a memory storage, a remote service...).
+The `Analyzer` (and, in turn, its controlled tasks) and the `CommonLogParser` classes  are directly injected with the (single) data access object. A better approach would be to inject an interface to a generic data repository, so that the classes that communicate to the data storage facilities are not aware of the nature of the data source they are actually using (it could be, for instance, a queue, a memory storage, a remote service...).
 
 
 
@@ -225,7 +227,7 @@ A bit overkill, considering that the whole set of tools gets packaged into a ~50
 
 Moreover, at the moment the very database data are stored on plain files on the disk, and no user accounts have been set on the db server. This means that practically anyone could use your-average-db-client and poke into the data depot, potentially jeopardizing the accuracy of the measurements.
 
-Even more: the longer the monitor collects data from the log, the bigger the database files become. We end up storing the whole log history when we actually get only aggregated data on the screen.
+Even more: the longer the monitor collects data from the log, the bigger the database files become. We end up storing the whole log history when we actually need only aggregated data on the screen.
 
 The hypothesis is to get rid of the whole db structure and have the Dao-dependent classes (see previous paragraph) query a data repository which keeps all the totals and aggregated data in memory. This way, when a new batch of log lines is read and submitted to the repository, the totals are properly updated and the batch is then discarded. Evaluations should be carried out as per the computational load that would be put on the application logic.
 

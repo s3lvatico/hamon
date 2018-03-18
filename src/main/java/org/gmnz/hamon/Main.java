@@ -64,6 +64,7 @@ public class Main implements ServerSocketListener {
 		analyzer.start();
 		log.info("analyzer started");
 
+		log.info("waiting for the first update to be signaled......");
 		executor.execute(serverSocketTask);
 		executor.shutdown();
 
