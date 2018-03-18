@@ -115,7 +115,7 @@ public class ConsoleOutput {
 		}
 		a.a(String.format("total site hits <%d> | topTraffic <%s> (%d)%n", dto.getTotalHits(), dto.getTopTrafficIp(),
 				dto.getTopTraffic()));
-		a.a(String.format("topSc200 <%s> (%d) | topSc302 <%s> (%d) | ", dto.getTopSc200Ip(), dto.getTopSc200Count(),
+		a.a(String.format("topSc200 <%s> (%d) | topSc302 <%s> (%d)%n", dto.getTopSc200Ip(), dto.getTopSc200Count(),
 				dto.getTopSc302Ip(), dto.getTopSc302Count()));
 		a.a(String.format("topSc5xx <%s> (%d) | topSc4xx <%s> (%d)%n", dto.getTopSc5xxIp(), dto.getTopSc5xxCount(),
 				dto.getTopSc4xxIp(), dto.getTopSc4xxCount()));
@@ -123,7 +123,7 @@ public class ConsoleOutput {
 		Iterator<String> reqMethIterator = dto.getHttpMethodsObserved().iterator();
 		while (reqMethIterator.hasNext()) {
 			String method = reqMethIterator.next();
-			a.a(String.format("%s : %.2f", method, dto.getHttpMethodFraction(method)));
+			a.a(String.format("%s (%.1f%%)", method, dto.getHttpMethodFraction(method)*100));
 			if (reqMethIterator.hasNext()) {
 				a.a(" | ");
 			}
@@ -131,7 +131,7 @@ public class ConsoleOutput {
 				a.a("\n");
 			}
 		}
-		a.a("'--");
+		a.a("'-");
 		return a;
 	}
 

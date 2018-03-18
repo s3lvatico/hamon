@@ -144,7 +144,10 @@ public class Analyzer implements InfoGathererListener, TrafficSensorListener {
 				alarmState = AlarmState.ON;
 			}
 			/*
-			 * this would update the current value of the last alarm notified
+			 * this would update the current value of the last alarm notified, but it comes
+			 * with a rather different frequency than the normal alarms being raised. This
+			 * requires a finer management of the output facilities, which I see as an
+			 * improvement.
 			 */
 			else {
 				consoleOutput.updateAlarm(timestamp, totalTraffic, alarmThreshold, trafficToThresholdRatio);
