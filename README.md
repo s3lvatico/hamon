@@ -55,7 +55,7 @@ When the total traffic drops back below the threshold, another message is added 
 
 ## Building
 
-When the build completes, binaries and the dependencies will be put into the `dist` directory.
+When the build completes, a single jar will be put into the `./dist` directory, whereas the dependencies will be put into `./dist/lib`
 
 Use `mvn package` (don't mind the stack traces, they're part of successful tests), or `mvn package -DskipTests` to skip tests.
 
@@ -83,15 +83,15 @@ Before running, check that no processes are listening to the ports 19756 and 197
  
 Once you've built the project, you have multiple choices.
 
-
+**Note:** Always build the project beforehead.
 
 ### Using the provided batch files
 
-**Note:** Using the provided batch files requires the project to be built beforehand.
+**Note:** running the tool this way will result in seeing a demo. The random log file producer and the monitor will be spawned with some default values for your convenience. Let it run for 5-6 minutes and you should see the stats flowing as well as some alarms being raised and reset.
 
 From the command prompt, launch the `hamonStart.bat` file.
 
-It will spawn both the random log generator process and the monitor as well, with default options.
+It will spawn both the random log generator process and the monitor as well, with some default options.
 To stop both processes, launch the `hamonStop.bat` file.
 
 
@@ -149,6 +149,8 @@ Its role is to periodically check the monitored file for new lines being added. 
 #### Parser
 Parses the log lines sent by the sampler and breaks them into the required components. The parsed data is then sent to the persistent storage.
 
+Particular attention has been put in making the parser distinguish the request made on the root section while stripping information about requesting resources found on the root section. (i.e. requests made towards "/" and "/saitama.js" or "/favicon.ico" should be recognized as requests made to the root secion).
+
 #### Analyzer
 The analyzer is the bridge between the data repository and the output facility. It uses two separate processes to gather generic statistics and traffic information from the database, does the necessary computations to determine whether an alarm should be raised or reset and then communicates with a console controller, whose role is to display the results.
 
@@ -180,9 +182,15 @@ On the upper side of the console you will see the alarms being raised and (hopef
 When an alarm is reset, another line is produced, indicating the timestamp, the traffic value, and its fraction of the traffic threshold as a percentage.
 
 
+### The random log generator tool
 
+Its task is to procude a log file in the expected format, but with time-variable frequencies. I purposefully did not let it accept parameters other than the target log file name, since this tool is intended to use as a demo.
 
+The random log line generation logic is in the class `org.gmnz.clog.ClfLineGenerator`, you can check it to see how I played with (pseudo) random numbers to generate a spectrum of requests as most variable as possible.
 
+The thread which drives the generation of the log lines operates in a two-state fashion; it has a running period of 3 minutes, with alternating states of low and high traffic generation, set in a duty cycle of 35%. Means: it's programmed to emit low traffic (generates 2 reqs/second) for 13/20 of the 3 minutes time window and emits high traffic (15 reqs/second) for the remaining time. This assures an alternating behavior of alarms being raised and reset with respect to a threshold of 20000000 bytes.
+
+  
 
 
 
