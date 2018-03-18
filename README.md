@@ -83,11 +83,11 @@ Before running, check that no processes are listening to the ports 19756 and 197
  
 Once you've built the project, you have multiple choices.
 
-**Note:** Always build the project beforehead.
+**Note:** It's always a good idea to build the project before your first execution.
 
 ### Using the provided batch files
 
-**Note:** running the tool this way will result in seeing a demo. The random log file producer and the monitor will be spawned with some default values for your convenience. Let it run for 5-6 minutes and you should see the stats flowing as well as some alarms being raised and reset.
+**Note:** running the tool this way will actually result in seeing a demo. The random log file producer and the monitor will be spawned with some default values for your convenience. Let it run for 5-6 minutes and you should see the stats flowing as well as some alarms being raised and reset.
 
 From the command prompt, launch the `hamonStart.bat` file.
 
@@ -200,14 +200,32 @@ The thread which drives the generation of the log lines operates in a two-state 
 
 ## Improvements
 
-* A raised alarm should get updated for you to check how much the total traffic goes above the threshold you set. Every update should be marked with its timestamp, while the displayed alarm line retains the timestamp of when the alarm was first issued.
 
 
 
-
-	
-	
-
+### Finer alarm information being showed to the user
+A raised alarm could get updated for you to check how much the total traffic goes above the threshold you set. Every update (to the same alarm) should be marked with the proper timestamp, while the displayed alarm line retains the timestamp of when the alarm was first issued.
 
 
- 
+
+### Ease of use
+The startup and shutdown scripts can be made easier by accepting parameters from the command line.
+
+
+
+### Loose coupling
+The `Analyzer` (and, in turn, its controlled tasks) and the `CommonLogParser` classes  are directly injected with the (single) data access object. A better approach would be to inject an interface to a generic data repository, so that the classes which communicate to the data storage facilities are not aware of the nature of the data source they are actually using (it could be, for instance, a queue, a memory storage, a remote service...).
+
+
+
+### Data storage
+I've used a full fledged (yet small) RDBMS to store the data being collected from the log. This ensured me a quick way of getting appropriately calculated and aggregated data, since I've "charged" the db server to compute the stats by defining a view (its definition is in the source and/or in the *.script file generated after an execution). 
+
+A bit overkill, considering that the whole set of tools gets packaged into a ~50kB jar file whereas the HSQLDB jar is about 1.5MB.
+
+Moreover, at the moment the very database data are stored on plain files on the disk, and no user accounts have been set on the db server. This means that practically anyone could use your-average-db-client and poke into the data depot, potentially jeopardizing the accuracy of the measurements.
+
+Even more: the longer the monitor collects data from the log, the bigger the database files become. We end up storing the whole log history when we actually get only aggregated data on the screen.
+
+The hypothesis is to get rid of the whole db structure and have the Dao-dependent classes (see previous paragraph) query a data repository which keeps all the totals and aggregated data in memory. This way, when a new batch of log lines is read and submitted to the repository, the totals are properly updated and the batch is then discarded. Evaluations should be carried out as per the computational load that would be put on the application logic.
+
