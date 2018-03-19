@@ -26,7 +26,8 @@ When the total traffic within a 2 minutes time window exceeds a threshold value 
 
 When the total traffic drops back below the threshold, another message is added after the last message, in a downward growing stack fashion.
 
-
+### Alternative versions
+An alternative version is available on the branch called "hitCounter". It differs from the "master" branch in that what is actually measured is the number of hits within a certain time window, instead of the generated traffic.
 
 
 ## How it was made
