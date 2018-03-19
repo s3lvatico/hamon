@@ -159,7 +159,9 @@ public class ConsoleOutput {
 
 	public void resetAlarm(long timestamp, int totalTraffic, int alarmThreshold, double trafficToThresholdRatio) {
 		String strTimestamp = Formatting.CLF_DF.format(new Date(timestamp));
-		String message = String.format("(i) [%s] traffic (%d) has fallen back within %.1f%% of threshold", strTimestamp,
+//		String message = String.format("(i) [%s] traffic (%d) has fallen back within %.1f%% of threshold", strTimestamp,
+//				totalTraffic, trafficToThresholdRatio * 100);
+		String message = String.format("(i) [%s] hit count (%d) has fallen back within %.1f%% of threshold", strTimestamp,
 				totalTraffic, trafficToThresholdRatio * 100);
 		Alarm alarm = new Alarm(timestamp, Alarm.TYPE_RESET, message);
 		alarmsHistory.addLast(alarm);
@@ -170,8 +172,10 @@ public class ConsoleOutput {
 
 	public void raiseAlarm(long timestamp, int totalTraffic, int alarmThreshold, double trafficToThresholdRatio) {
 		String strTimestamp = Formatting.CLF_DF.format(new Date(timestamp));
-		String message = String.format("<!> [%s] ALARM: traffic crossed the threshold (%d > %d) %.1f%% above ",
+		String message = String.format("<!> [%s] ALARM: hit count crossed the threshold (%d > %d) %.1f%% above ",
 				strTimestamp, totalTraffic, alarmThreshold, (trafficToThresholdRatio - 1) * 100);
+//		String message = String.format("<!> [%s] ALARM: traffic crossed the threshold (%d > %d) %.1f%% above ",
+//				strTimestamp, totalTraffic, alarmThreshold, (trafficToThresholdRatio - 1) * 100);
 		Alarm alarm = new Alarm(timestamp, Alarm.TYPE_RAISED, message);
 		alarmsHistory.addLast(alarm);
 	}

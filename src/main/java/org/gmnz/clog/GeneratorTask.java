@@ -4,6 +4,8 @@ package org.gmnz.clog;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 
 class GeneratorTask implements Runnable {
 
@@ -19,6 +21,7 @@ class GeneratorTask implements Runnable {
 
 	private boolean active = true;
 
+	private static final Logger log = Logger.getLogger(GeneratorTask.class);	
 
 
 
@@ -51,6 +54,7 @@ class GeneratorTask implements Runnable {
 				trafficLoad = HIGH_TRAFFIC;
 			}
 			List<String> logLines = generator.generateClfLines(trafficLoad);
+			log.debug(String.format("%d log lines generated", logLines.size()));
 			listener.logLinesGenerated(logLines);
 			cursor = cursor + 1;
 			if (cursor > GENERATION_COUNT) {

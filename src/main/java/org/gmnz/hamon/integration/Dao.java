@@ -37,6 +37,8 @@ public class Dao {
 
 
 	private static final String SQL_FMT_TRAFFIC_TIME_WINDOW = "SELECT SUM(BYTES_TX) FROM DATA_DEPOT WHERE TS BETWEEN DATE_SUB(TIMESTAMP '%s', INTERVAL %d MINUTE) AND TIMESTAMP '%s'";
+	
+	private static final String SQL_FMT_HITS_TIME_WINDOW = "SELECT COUNT(1) FROM DATA_DEPOT WHERE TS BETWEEN DATE_SUB(TIMESTAMP '%s', INTERVAL %d MINUTE) AND TIMESTAMP '%s'";
 
 /*
  * SELECT SUM(BYTES_TX) FROM DATA_DEPOT WHERE TS BETWEEN DATE_SUB(TIMESTAMP
@@ -243,7 +245,8 @@ public class Dao {
 		Statement query = null;
 		ResultSet rs = null;
 		String tsNow = Formatting.DB_DF.format(new Date());
-		String sqlTrafficTimeWindow = String.format(SQL_FMT_TRAFFIC_TIME_WINDOW, tsNow, windowWidth, tsNow);
+//		String sqlTrafficTimeWindow = String.format(SQL_FMT_TRAFFIC_TIME_WINDOW, tsNow, windowWidth, tsNow);
+		String sqlTrafficTimeWindow = String.format(SQL_FMT_HITS_TIME_WINDOW, tsNow, windowWidth, tsNow);
 		int totalTraffic = -1;
 		try {
 			query = serverEngine.getConnection().createStatement();
