@@ -80,6 +80,8 @@ Use `mvn package` (don't mind the stack traces, they're part of successful tests
 ## Running 
 
 Before running, check that no processes are listening to the ports 19756 and 19757. These ports are used as listening sockets for issuing shutdown command for the log generator process and the log parser.
+
+Since this application runs and displays data on the console, it is advised to use a rather "tall" console window prior to running. A geometry of about 45 rows by 100 columns is adequate.
  
 Once you've built the project, you have multiple choices.
 
